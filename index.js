@@ -63,12 +63,12 @@ module.exports = function(fileName, options){
             // write processed file(s)
             blessedFiles.forEach(function (blessedFile) {
 
-                stream.emit('data', new File({
-                    cwd: firstFile.cwd,
-                    base: firstFile.base,
-                    path: path.resolve(blessedFile.filename),
-                    contents: new Buffer(blessedFile.content)
-                }));
+              stream.emit('data', new File({
+                  cwd: firstFile.cwd,
+                  base: firstFile.base.replace(options.remove_base, ""),
+                  path: blessedFile.filename.replace(options.remove_path, ""),
+                  contents: new Buffer(blessedFile.content)
+              }));
             });
 
             stream.emit('end');
