@@ -66,7 +66,13 @@ module.exports = function(fileName, options){
               stream.emit('data', new File({
                   cwd: firstFile.cwd,
                   base: firstFile.base.replace(options.remove_base, ""),
-                  path: blessedFile.filename.replace(options.remove_path, ""),
+                  path: function() {
+                    if (options.prefix !== undefined) {
+                      return blessedFile.filename.replace(options.remove_path, options.prefix);
+                    } else {
+                      return blessedFile.filename.replace(options.remove_path, "");
+                    }
+                  }(),
                   contents: new Buffer(blessedFile.content)
               }));
             });
